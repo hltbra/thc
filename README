@@ -1,7 +1,7 @@
 THC
 ===
 
-THC (THC is not Hemp for C developers) is a set of macros and small functions aimed
+THC (Testing High C) is a set of macros and small functions aimed
 to help C developers write their tests.
 
 gcc htest.c -o htest.out && ./htest.out
