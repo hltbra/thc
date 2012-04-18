@@ -1,6 +1,10 @@
 Prime Factors Kata
 ==================
 
-gcc -o primes.out primefactors.c  -I.. ../thc.c && ./primes.out
+gcc -Wall -o primes.out primefactors.c  -I.. ../thc.c && ./primes.out
 
 
+Linked List
+===========
+
+gcc -Wall -o linkedlist.out linkedlist.c -I.. ../thc.c && ./linkedlist.out
