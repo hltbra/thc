@@ -1,10 +1,14 @@
+primefactors.c
+==============
+
 Prime Factors Kata
-==================
 
 gcc -Wall -o primes.out primefactors.c  -I.. ../thc.c && ./primes.out
 
 
-Linked List
-===========
+linkedlist.c
+============
+
+An example of a generic linked list implementation.
 
 gcc -Wall -o linkedlist.out linkedlist.c -I.. ../thc.c && ./linkedlist.out
