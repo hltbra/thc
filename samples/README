@@ -1,0 +1,6 @@
+Prime Factors Kata
+==================
+
+gcc -o primes.out primefactors.c  -I.. ../thc.c && ./primes.out
+
+
