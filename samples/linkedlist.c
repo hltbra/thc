@@ -2,7 +2,7 @@
 #include "thc.h"
 
 typedef struct node_s {
-    int value;
+    void *value;
     struct node_s *next;
 } node_t;
 
@@ -16,7 +16,7 @@ void list_create(list_t *l) {
     l->head = NULL;
 }
 
-void list_add(list_t *l, int value) {
+void list_add(list_t *l, void *value) {
     node_t *current, *new_node;
     if (l->size == 0) {
         l->head = malloc(sizeof(node_t));
@@ -35,7 +35,7 @@ void list_add(list_t *l, int value) {
     l->size++;
 }
 
-int list_get(list_t *l, int position) {
+void *list_get(list_t *l, int position) {
     node_t *current = l->head;
     int i;
     for (i = 0 ; current != NULL ; i++) {
@@ -44,7 +44,7 @@ int list_get(list_t *l, int position) {
         }
         current = current->next;
     }
-    return -1; // TODO: not found
+    return NULL; // TODO: not found
 }
 
 void list_remove(list_t *l, int position) {
@@ -84,11 +84,11 @@ void list_destroy(list_t *l) {
 
 void node_should_have_value(void) {
     node_t first, second;
-    first.value = 123;
+    first.value = (void *)123;
     first.next = &second;
-    second.value = 456;
+    second.value = (void *)456;
     second.next = NULL;
-    ENSURE(first.next->value == 456);
+    ENSURE(first.next->value == (void *)456);
 }
 
 void list_with_no_elements(void) {
@@ -100,15 +100,15 @@ void list_with_no_elements(void) {
 void list_with_single_element(void) {
     list_t l;
     list_create(&l);
-    list_add(&l, 123);
+    list_add(&l, (void *)123);
     ENSURE(l.size == 1);
-    ENSURE(list_get(&l, 0) == 123);
+    ENSURE(list_get(&l, 0) == (void *)123);
 }
 
 void should_remove_element_from_list(void) {
     list_t l;
     list_create(&l);
-    list_add(&l, 123);
+    list_add(&l, (void *)123);
     list_remove(&l, 0);
     ENSURE(l.size == 0);
 }
@@ -116,19 +116,19 @@ void should_remove_element_from_list(void) {
 void remove_last_element_from_list(void) {
     list_t l;
     list_create(&l);
-    list_add(&l, 123);
-    list_add(&l, 456);
-    list_add(&l, 789);
+    list_add(&l, (void *)123);
+    list_add(&l, (void *)456);
+    list_add(&l, (void *)789);
     list_remove(&l, 2);
     ENSURE(l.size == 2);
-    ENSURE(list_get(&l, 1) == 456);
+    ENSURE(list_get(&l, 1) == (void *)456);
 }
 
 void list_should_be_destroyable(void) {
     list_t l;
     list_create(&l);
-    list_add(&l, 123);
-    list_add(&l, 456);
+    list_add(&l, (void *)123);
+    list_add(&l, (void *)456);
     list_destroy(&l);
     ENSURE(l.size == 0);
     ENSURE(l.head == NULL);
@@ -137,13 +137,23 @@ void list_should_be_destroyable(void) {
 void list_with_many_elements(void) {
     list_t l;
     list_create(&l);
-    list_add(&l, 123);
-    list_add(&l, 456);
-    list_add(&l, 789);
+    list_add(&l, (void *)123);
+    list_add(&l, (void *)456);
+    list_add(&l, (void *)789);
     ENSURE(l.size == 3);
-    ENSURE(list_get(&l, 0) == 123);
-    ENSURE(list_get(&l, 1) == 456);
-    ENSURE(list_get(&l, 2) == 789);
+    ENSURE(list_get(&l, 0) == (void *)123);
+    ENSURE(list_get(&l, 1) == (void *)456);
+    ENSURE(list_get(&l, 2) == (void *)789);
+    list_destroy(&l);
+}
+
+void list_of_float(void) {
+    float value = 123.456;
+    list_t l;
+    list_create(&l);
+    list_add(&l, &value);
+    ENSURE(l.size == 1);
+    ENSURE(*(float *)list_get(&l, 0) == value);
     list_destroy(&l);
 }
 
@@ -155,5 +165,6 @@ int main() {
     thc_addtest(list_should_be_destroyable);
     thc_addtest(list_with_many_elements);
     thc_addtest(remove_last_element_from_list);
+    thc_addtest(list_of_float);
     return thc_run(1);
 }
