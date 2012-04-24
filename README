@@ -4,4 +4,4 @@ THC
 THC (Testing High C) is a set of macros and small functions aimed
 to help C developers write their tests.
 
-gcc htest.c -o htest.out && ./htest.out
+gcc test_thc.c thc.c -o htest.out && ./htest.out
