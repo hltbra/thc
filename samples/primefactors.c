@@ -59,5 +59,5 @@ int main(void) {
     thc_addtest(test_number_with_only_one_prime_factor);
     thc_addtest(test_number_with_one_prime_factor_multiple_times);
     thc_addtest(test_number_with_two_prime_factors_multiple_times);
-    return thc_run(1);
+    return thc_run(THC_VERBOSE);
 }

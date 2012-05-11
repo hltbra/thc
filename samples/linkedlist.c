@@ -166,5 +166,5 @@ int main() {
     thc_addtest(list_with_many_elements);
     thc_addtest(remove_last_element_from_list);
     thc_addtest(list_of_float);
-    return thc_run(1);
+    return thc_run(THC_QUIET);
 }
