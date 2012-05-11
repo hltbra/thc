@@ -24,7 +24,6 @@ Create a test.c file:
 Compile with:
 
 	$ gcc -o test.out test.c  -Ipath/to/thc/ path/to/thc/thc.c
-	$ ./test.out
 
 See it run:
 
