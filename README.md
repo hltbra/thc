@@ -4,8 +4,6 @@ THC
 THC (Testing High C) is a set of macros and small functions aimed
 to help C developers write their tests.
 
-gcc test_thc.c thc.c -o htest.out && ./htest.out
-
 
 Usage
 -----
@@ -35,6 +33,6 @@ See it run:
 
 	Run 1 test with 0 failures
 
-I can haz colors:
+I CAN HAZ COLORS:
 
 ![usage](http://cloud.github.com/downloads/hltbra/thc/thc_usage.png)
