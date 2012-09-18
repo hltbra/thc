@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "thc.h"
 #define PRIVATE static
 #define PUBLIC
@@ -60,9 +63,21 @@ PUBLIC void thc_addtest(void (*f)(void)) {
 
 PUBLIC int thc_run(int verbose) {
     int i;
+    int child_status;
+    pid_t pid;
     verbose_tests = verbose;
     for (i = 0 ; i < ntests ; i++) {
-        tests[i]();
+        pid = fork();
+        if (pid == 0) {
+            tests[i]();
+            exit(0);
+        } else {
+            wait(&child_status);
+            if (child_status != 0) {
+                printf("\n%sSEVERAL TEST ERROR\n%s", (char*)RED,
+                                                     (char*)STOPCOLOR);
+            }
+        }
     }
     thc_report_tests();
     return nfailures;
