@@ -4,8 +4,8 @@
 #define ENSURE(expr) thc_run_check((expr), #expr, __func__, __FILE__, __LINE__)
 
 enum {
-	THC_QUIET = 0x1,    /* 0001 */
-	THC_VERBOSE = 0x2,  /* 0010 */
+    THC_QUIET = 0x1,    /* 0001 */
+    THC_VERBOSE = 0x2,  /* 0010 */
     THC_NOFORK = 0x4,   /* 0100 */
 };
 
