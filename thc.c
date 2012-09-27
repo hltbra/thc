@@ -15,7 +15,6 @@ PRIVATE const char *GREEN = "\033[01;32m";
 PRIVATE const char *STOPCOLOR = "\033[m";
 PRIVATE char verbose_tests = 0;
 
-PRIVATE int no_fork = 0;
 PRIVATE long ntests = 0;
 PRIVATE long nfailures = 0;
 PRIVATE void (*tests[THC_MAX_TESTS])(void);
@@ -65,6 +64,7 @@ PUBLIC void thc_addtest(void (*f)(void)) {
 PUBLIC int thc_run(int options) {
     int i;
     int child_status;
+    int no_fork;
     pid_t pid;
 
     if ((options & THC_QUIET) && (options & THC_VERBOSE)) {
