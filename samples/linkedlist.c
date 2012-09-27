@@ -157,14 +157,22 @@ void list_of_float(void) {
     list_destroy(&l);
 }
 
+void should_segfault(void) {
+    list_t l;
+    list_create(&l);
+    free(&l);
+    ENSURE(1 == 1);
+}
+
 int main() {
     thc_addtest(node_should_have_value);
     thc_addtest(list_with_no_elements);
     thc_addtest(should_remove_element_from_list);
     thc_addtest(list_with_single_element);
+    thc_addtest(should_segfault);
     thc_addtest(list_should_be_destroyable);
     thc_addtest(list_with_many_elements);
     thc_addtest(remove_last_element_from_list);
     thc_addtest(list_of_float);
-    return thc_run(THC_QUIET);
+    return thc_run(THC_VERBOSE);
 }

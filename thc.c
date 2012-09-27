@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "thc.h"
 #define PRIVATE static
 #define PUBLIC
@@ -12,6 +15,7 @@ PRIVATE const char *GREEN = "\033[01;32m";
 PRIVATE const char *STOPCOLOR = "\033[m";
 PRIVATE char verbose_tests = 0;
 
+PRIVATE int no_fork = 0;
 PRIVATE long ntests = 0;
 PRIVATE long nfailures = 0;
 PRIVATE void (*tests[THC_MAX_TESTS])(void);
@@ -58,11 +62,36 @@ PUBLIC void thc_addtest(void (*f)(void)) {
     tests[ntests++] = f;
 }
 
-PUBLIC int thc_run(int verbose) {
+PUBLIC int thc_run(int options) {
     int i;
-    verbose_tests = verbose;
+    int child_status;
+    pid_t pid;
+
+    if ((options & THC_QUIET) && (options & THC_VERBOSE)) {
+        printf("Invalid Test Option\n");
+        printf("You can't mix THC_QUIET and THC_VERBOSE\n");
+        exit(-1);
+    }
+
+    verbose_tests = options & THC_VERBOSE;
+    no_fork = options & THC_NOFORK;
+
     for (i = 0 ; i < ntests ; i++) {
-        tests[i]();
+        if (no_fork) {
+            tests[i]();
+        } else {
+            pid = fork();
+            if (pid == 0) {
+                tests[i]();
+                exit(0);
+            } else {
+                wait(&child_status);
+                if (child_status != 0) {
+                    printf("\n%sSEVERAL TEST ERROR\n%s", (char*)RED,
+                                                         (char*)STOPCOLOR);
+                }
+            }
+        }
     }
     thc_report_tests();
     return nfailures;
