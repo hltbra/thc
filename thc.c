@@ -17,6 +17,7 @@ PRIVATE char verbose_tests = 0;
 
 PRIVATE long ntests = 0;
 PRIVATE long nfailures = 0;
+PRIVATE long nsegfaults = 0;
 PRIVATE void (*tests[THC_MAX_TESTS])(void);
 
 PRIVATE void thc_add_success(const char *expr, const char *func, const char *filename, const int fileno);
@@ -46,7 +47,10 @@ PRIVATE void thc_report_tests(void) {
     if (nfailures) {
         color = (char *)RED;
     }
-    printf("\n%sRun %ld test%s with %ld failure%s%s\n", color, ntests, (ntests == 1 ? "" : "s"), nfailures, (nfailures == 1 ? "" : "s"), STOPCOLOR);
+    printf("\n%sRun %ld test%s with %ld failure%s and %ld segfault%s %s\n",
+            color, ntests, (ntests == 1 ? "" : "s"),
+            nfailures, (nfailures == 1 ? "" : "s"),
+            nsegfaults, (nsegfaults == 1 ? "" : "s"), STOPCOLOR);
 }
 
 PUBLIC void thc_run_check(const int result, const char *expr, const char *func, const char *fname, const int fline) {
@@ -83,12 +87,17 @@ PUBLIC int thc_run(int options) {
             pid = fork();
             if (pid == 0) {
                 tests[i]();
-                exit(0);
+                exit(nfailures);
             } else {
                 wait(&child_status);
-                if (child_status != 0) {
-                    printf("\n%sSEVERAL TEST ERROR\n%s", (char*)RED,
-                                                         (char*)STOPCOLOR);
+                if (child_status > 0) {
+                    if (WIFEXITED(child_status)) {
+                        nfailures++;
+                    } else{
+                        nsegfaults++;
+                        printf("\n%sSEVERAL TEST ERROR\n%s", (char*)RED,
+                                                             (char*)STOPCOLOR);
+                    }
                 }
             }
         }
