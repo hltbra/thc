@@ -86,6 +86,7 @@ PUBLIC int thc_run(int options) {
         } else {
             pid = fork();
             if (pid == 0) {
+                nfailures = 0;
                 tests[i]();
                 exit(nfailures);
             } else {
