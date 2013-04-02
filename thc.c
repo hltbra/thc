@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "thc.h"
@@ -9,6 +10,9 @@
 enum {
     THC_MAX_TESTS = 1024
 };
+
+PRIVATE struct timeval start, stop;
+PRIVATE double time_elapsed = 0;
 
 PRIVATE const char *RED = "\033[01;31m";
 PRIVATE const char *GREEN = "\033[01;32m";
@@ -23,6 +27,10 @@ PRIVATE void (*tests[THC_MAX_TESTS])(void);
 PRIVATE void thc_add_success(const char *expr, const char *func, const char *filename, const int fileno);
 PRIVATE void thc_add_failure(const char *expr, const char *func, const char *filename, const int fileno);
 PRIVATE void thc_report_tests(void);
+
+PRIVATE void thc_calc_time(struct timeval start, struct timeval stop, double *time_elapsed){
+    *time_elapsed = stop.tv_sec - start.tv_sec + (stop.tv_usec - start.tv_usec)/1000000.0;
+}
 
 
 PRIVATE void thc_add_success(const char *expr, const char *func, const char *filename, const int fileno) {
@@ -47,10 +55,13 @@ PRIVATE void thc_report_tests(void) {
     if (nfailures) {
         color = (char *)RED;
     }
-    printf("\n%sRun %ld test%s with %ld failure%s and %ld segfault%s %s\n",
+    gettimeofday(&stop, NULL);
+    thc_calc_time(start, stop, &time_elapsed);
+    printf("\n%sRun %ld test%s with %ld failure%s and %ld segfault%s in %.4fs\n %s\n",
             color, ntests, (ntests == 1 ? "" : "s"),
             nfailures, (nfailures == 1 ? "" : "s"),
-            nsegfaults, (nsegfaults == 1 ? "" : "s"), STOPCOLOR);
+            nsegfaults, (nsegfaults == 1 ? "" : "s"),
+            time_elapsed, STOPCOLOR);
 }
 
 PUBLIC void thc_run_check(const int result, const char *expr, const char *func, const char *fname, const int fline) {
@@ -66,11 +77,12 @@ PUBLIC void thc_addtest(void (*f)(void)) {
 }
 
 PUBLIC int thc_run(int options) {
+    gettimeofday(&start, NULL);
+
     int i;
     int child_status;
     int no_fork;
     pid_t pid;
-
     if ((options & THC_QUIET) && (options & THC_VERBOSE)) {
         printf("Invalid Test Option\n");
         printf("You can't mix THC_QUIET and THC_VERBOSE\n");
@@ -106,4 +118,3 @@ PUBLIC int thc_run(int options) {
     thc_report_tests();
     return nfailures;
 }
-
