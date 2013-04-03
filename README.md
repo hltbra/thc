@@ -10,7 +10,7 @@ to help C developers write their tests.
 Usage
 -----
 
-Create a test.c file:
+Create a C test file (let's say test.c):
 
 	#include "thc.h"
 
@@ -27,13 +27,24 @@ Compile with:
 
 	$ gcc -o test.out test.c  -Ipath/to/thc/ path/to/thc/thc.c
 
-See it run:
+See it running:
 
 	$ ./test.out
 	2 + 2 == 4 ... OK [ensure_not_high, test.c:4]
 
 	Run 1 test with 0 failures
 
-I CAN HAZ COLORS:
+
+Samples
+-------
+
+There are some samples at [samples/](https://github.com/hltbra/thc/tree/master/samples).
+
+
+
+Colors
+------
+
+I CAN HAZ COLORS!
 
 ![usage](http://cloud.github.com/downloads/hltbra/thc/thc_usage.png)
