@@ -1,5 +1,6 @@
 import difflib
 import os
+import re
 import tempfile
 import subprocess
 import unittest
@@ -24,7 +25,8 @@ def remove_colors(msg):
 
 
 def normalize_output(msg, fname):
-    return remove_colors(msg).strip().replace(fname, "FNAME")
+    result = remove_colors(msg).strip().replace(fname, "FNAME")
+    return re.sub(r'\d+\.\d+s$', 'SECONDS', result)
 
 
 class THCTestCase(unittest.TestCase):

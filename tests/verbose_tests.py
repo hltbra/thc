@@ -10,7 +10,7 @@ class THCVerboseTestCase(THCTestCase):
                 return thc_run(THC_VERBOSE);
             }
             """,
-            """Run 0 tests with 0 failures and 0 segfaults""")
+            """Run 0 tests with 0 failures and 0 segfaults in SECONDS""")
 
     def test_simple_successful_ensure(self):
         self.assertNoDiff("""\
@@ -26,7 +26,7 @@ class THCVerboseTestCase(THCTestCase):
             """\
 1 == 1 ... OK [one_should_equal_to_one, FNAME:3]
 
-Run 1 test with 0 failures and 0 segfaults""")
+Run 1 test with 0 failures and 0 segfaults in SECONDS""")
 
     def test_simple_unsuccessful_ensure(self):
         self.assertNoDiff("""\
@@ -41,7 +41,7 @@ Run 1 test with 0 failures and 0 segfaults""")
             """, """\
 1 == 2 ... FAIL [one_should_equal_to_two, FNAME:3]
 
-Run 1 test with 1 failure and 0 segfaults""")
+Run 1 test with 1 failure and 0 segfaults in SECONDS""")
 
     def test_segfault(self):
         self.assertNoDiff("""\
@@ -58,7 +58,7 @@ Run 1 test with 1 failure and 0 segfaults""")
             """, """\
 THC FOUND A SEGFAULT!!!
 
-Run 1 test with 0 failures and 1 segfault""")
+Run 1 test with 0 failures and 1 segfault in SECONDS""")
 
 
 if __name__ == '__main__':
