@@ -1,6 +1,8 @@
 THC
 ===
 
+[![Build Status](https://travis-ci.org/hltbra/thc.png)](https://travis-ci.org/hltbra/thc)
+
 THC (Testing High C) is a set of macros and small functions aimed
 to help C developers write their tests.
 
