@@ -48,7 +48,7 @@ Run 1 test with 1 failure and 0 segfaults""")
             #include "thc.h"
             #include <stdlib.h>
             void should_segfault() {
-                char *p;
+                char *p = (char *)0x1;
                 free(p);
             }
             int main() {
