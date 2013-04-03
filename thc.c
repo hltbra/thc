@@ -47,7 +47,7 @@ PRIVATE void thc_report_tests(void) {
     if (nfailures) {
         color = (char *)RED;
     }
-    printf("\n%sRun %ld test%s with %ld failure%s and %ld segfault%s %s\n",
+    printf("\n%sRun %ld test%s with %ld failure%s and %ld segfault%s%s\n",
             color, ntests, (ntests == 1 ? "" : "s"),
             nfailures, (nfailures == 1 ? "" : "s"),
             nsegfaults, (nsegfaults == 1 ? "" : "s"), STOPCOLOR);
@@ -96,8 +96,8 @@ PUBLIC int thc_run(int options) {
                         nfailures++;
                     } else{
                         nsegfaults++;
-                        printf("\n%sSEVERAL TEST ERROR\n%s", (char*)RED,
-                                                             (char*)STOPCOLOR);
+                        printf("\n%sTHC FOUND A SEGFAULT!!!\n%s", (char*)RED,
+                                                   (char*)STOPCOLOR);
                     }
                 }
             }

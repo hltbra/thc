@@ -43,6 +43,23 @@ Run 1 test with 0 failures and 0 segfaults""")
 
 Run 1 test with 1 failure and 0 segfaults""")
 
+    def test_segfault(self):
+        self.assertNoDiff("""\
+            #include "thc.h"
+            #include <stdlib.h>
+            void should_segfault() {
+                char *p;
+                free(p);
+            }
+            int main() {
+                thc_addtest(should_segfault);
+                return thc_run(THC_VERBOSE);
+            }
+            """, """\
+THC FOUND A SEGFAULT!!!
+
+Run 1 test with 0 failures and 1 segfault""")
+
 
 if __name__ == '__main__':
     unittest.main()
