@@ -49,3 +49,7 @@ Colors
 I CAN HAZ COLORS!
 
 ![usage](http://cloud.github.com/downloads/hltbra/thc/thc_usage.png)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/hltbra/thc/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
