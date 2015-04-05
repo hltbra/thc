@@ -3,7 +3,6 @@ THC
 
 [![Build Status](https://travis-ci.org/hltbra/thc.png)](https://travis-ci.org/hltbra/thc)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/hltbra/thc/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-<img src="https://instanc.es/bin/hltbra/thc.png" width="95" height="18" />
 
 THC (Testing High C) is a set of macros and small functions aimed
 to help C developers write their tests.
